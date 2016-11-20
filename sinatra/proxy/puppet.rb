@@ -1,4 +1,4 @@
-module Modules
+
 module Puppet
   def self.registered(app)
 
@@ -22,5 +22,4 @@ end
 
 end
 register Puppet
-end
 
