@@ -1,0 +1,5 @@
+source :rubygems
+gem 'sinatra', :git => 'git://github.com/sinatra/sinatra.git'
+gem 'json' 
+gem 'rack', '>= 1.1'
+
