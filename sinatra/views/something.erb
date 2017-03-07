@@ -1,0 +1,22 @@
+<html>
+  <head>
+    <title>PROXY WEBUI</title>
+  </head>
+  <body>
+ 
+
+<table>
+<% @taskarray.each do |elem| %>
+  <tr>
+    <td>
+      <%= puts elem.to_yaml %>
+    </td>
+  </tr>
+<% end %>
+</table>
+
+
+  <br><a href="/webui">Click here to get back to the main page.</a>
+
+  </body>
+</html>
