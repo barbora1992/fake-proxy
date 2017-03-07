@@ -40,3 +40,70 @@ I, [2017-01-28T03:45:54.356520 #15570]  INFO -- : listing version
 I, [2017-01-28T06:16:09.895316 #15570]  INFO -- : listing features
 I, [2017-01-28T06:17:19.939692 #15570]  INFO -- : listing features
 I, [2017-01-28T06:17:55.050603 #15570]  INFO -- : listing features
+I, [2017-03-07T20:45:28.600205 #3351]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-07T20:45:55.571989 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T20:46:33.186309 #3351]  INFO -- : listing version
+I, [2017-03-07T20:46:42.743886 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T20:46:51.419788 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T20:47:04.702979 #3351]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-07T20:47:11.168831 #3351]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-07T20:48:07.637352 #3351]  INFO -- : Failed to sign certname
+I, [2017-03-07T20:48:24.452252 #3351]  INFO -- : Failed to sign certname
+I, [2017-03-07T20:49:10.313832 #3351]  INFO -- : Failed to sign certname
+I, [2017-03-07T20:49:26.910776 #3351]  INFO -- : listing features
+I, [2017-03-07T20:49:43.719218 #3351]  INFO -- : Failed to sign certname
+I, [2017-03-07T20:59:44.039830 #3351]  INFO -- : listing version
+I, [2017-03-07T21:00:45.018554 #3351]  INFO -- : listing version
+I, [2017-03-07T21:01:07.297764 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T21:01:09.835028 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T21:02:05.139197 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T21:02:05.637535 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T21:02:06.088000 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T21:05:57.555173 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:06:25.624196 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:06:27.160978 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:06:35.600871 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:26.802931 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:35.446415 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:36.477354 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:37.242255 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:44.734082 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:10:50.746460 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:48.285048 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:48.851085 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:49.344733 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:49.629110 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:49.829310 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:11:50.036687 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:13:06.104475 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:13:06.670097 #3351]  INFO -- : Failed to add certname to Puppet autosign
+I, [2017-03-07T21:13:08.622072 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:10:57.991035 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:13:04.628477 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:13:06.706937 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:13:07.413763 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:13:07.627905 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:13:07.832017 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:20.267202 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:21.863557 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:22.073039 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:22.263590 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:22.442994 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:22.603275 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:31.411652 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:31.971983 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:32.219675 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:32.411854 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:32.591516 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:32.737184 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:17:32.886923 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:15.136214 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:26.957319 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:27.424768 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:27.663640 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:27.867383 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:28.040509 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:28.218420 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:20:28.352213 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:25:25.514443 #3351]  INFO -- : Failed to list certificates
+I, [2017-03-07T22:25:52.050883 #3351]  INFO -- : listing features

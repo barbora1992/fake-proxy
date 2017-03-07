@@ -5,54 +5,39 @@ require 'sinatra/content_for'
 require 'sinatra/namespace'
 require 'sinatra/contrib/all'
 require 'yaml'
+require 'sinatra/base'
+require 'sinatra/flash'
+require 'securerandom'
 
-#env['rack.errors'] = '/home/barbora/fake-proxy/sinatra/app.error.log' #nope
+enable :sessions
+register Sinatra::Flash
 set :bind, '0.0.0.0'
 enable :logging #works
 #set :logger #nope
 require 'logger'
 logger = Logger.new('/home/barbora/fake-proxy/sinatra/app.error.log')
-#tasks = Logger.new('/home/barbora/fake-proxy/sinatra/app.tasks.log') 
-arr = Array.new   
-#class Proxy < Sinatra::Base #ak z toho urobim triedu tak sa zapne ale nic neodpoveda, modul mozno? 
 require './puppet.rb'
 register Puppet
 
-#subor = YAML::load_file('/tmp/test.yml')
+taskarray = Array.new
+#taskarray2 = Array.new
 
 #****************Class Task
-class Operation
-  include Enumerable
-  def each
-    yield "get"
-    yield "post"
-    yield "delete"
-  end
-end
-
-class Status #na get postt etc? na status? 
-  include Enumerable
-  def each
-    yield "."
-    #yield 
-    #yield 
-  end
-end
-
 class Task 
-  def initialize(type, operation, params, date, status) #typ (napr /puppet/ca), operacia (post del get) a nazov cert
+  def initialize(type, operation, param, date, status) #typ (napr /puppet/ca), operacia (post del get) a nazov cert
     @type = type
     @operation = operation
-    @param = param 
+    @param = param
     @date = date
     @status = status
+    @uuid = SecureRandom.hex(10) 
   end
   
+  #ruby ma svoju to_hash metodu ale s tou mi nefungovalo uuid
   def to_hash
-  Hash["type" => @type, "operation" => @operation, "param" => @params, "date" => @date, "status" => @status]
+  Hash["type" => @type, "operation" => @operation, "param" => @param, "date" => @date, "status" => @status, "uuid" => @uuid]
   end
 end
-
 #****************************
 
 
@@ -76,147 +61,142 @@ get "/ping" do #na normalnej proxy ping je undefined aj ked foreman sa to obcas 
   'hello' 
 end
 
-
 get "/hashtest" do
-  t = Task.new("a","b","c", "d", "e")
+  t = Task.new("a","b","c","d","e")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end  
-  t.to_hash.to_yaml
-  #t.to_hash.to_yaml
+  taskarray.push(x)
+  "hello"
 end
-
 
 get "/logs/" do
   logger.info('listing logs')
-  content_type :json #doesnt work
+  content_type :json 
   logger.to_json	
+end
+
+post "/posttest/:testval" do
+  title = params[:testval]
+  title
 end
 
 ##################################WEBUI#######################################################
 
-get '/webui' do #nepodstatne
+get '/webui' do 
   erb :webui
-  # renders views/webui.erb
 end
 
 get '/downloadtasks' do 
-  time = Time.now.strftime('%Y_%m_%d_%H%M%S')
-  send_file "/tmp/test.yml", :filename => "tasklist"+time+".yaml", :type => 'Application/octet-stream'
+  if File.file?("/tmp/test.yml")
+    time = Time.now.strftime('%Y_%m_%d_%H%M%S')
+    send_file "/tmp/test.yml", :filename => "tasklist"+time+".yaml", :type => 'Application/octet-stream'
+  else 
+    erb :error
+  end
 end
 
 get '/deletetasks' do
-  File.delete("/tmp/test2.yml") #zatial aby nemazalo pravy subor
+  if File.file?("/tmp/test.yml")
+    File.delete("/tmp/test.yml") #zatial aby nemazalo pravy subor
+    erb :success
+  else 
+    erb :error
+  end
+end
+
+get '/listtasks' do #display UNSAVED list
+  erb :something #y u no work
+end
+
+get '/savetasks' do
+  File.open("/tmp/test.yml","w") do |file|
+    taskarray.each do |task|
+      t = task 
+      file.write task.to_yaml
+    end
+  end
+  erb :success
+end
+
+get '/deleteuuid' do
+  erb :deleteuuid
+end
+
+post '/deletetaskuuid' do 
+  u = params[:uuid]
+  taskarray.delete_if { |h| h["uuid"] == u }
   redirect '/webui'
 end
+
+'''
+get /deletesingletask do #delete task by uuid..bude potrebovat dialog
+  erb :todo
+end
+
+get /inserttask do #manually insert a task? formular? 
+  erb :todo
+end
+
+get /deletealltasks do #delete all unsaved tasks
+  erb :todo
+end
+'''
 
 ###############################PUPPETCA#####################################################
 
 get "/puppet/ca" do #list of all puppet certificates
-# /usr/bin/sudo -S /usr/local/bin/puppet cert --ssldir /etc/puppetlabs/puppet/ssl --list --all 
-#z outputu 
-# + "localhost" (SHA256) 58:63:9B:D7:6F:80:97:85:37:9D:C8:D4:D4:0A:BF:39:F4:12:68:AB:9D:F0:79:A1:9B:C2:C6:52:3D:97:7F:14
-#resp s -H:
-#+ "localhost"
-#  (SHA256) 58:63:9B:D7:6F:80:97:85:37:9D:C8:D4:D4:0A:BF:39:F4:12:68:AB:9D:F0:79:A1:9B:C2:C6:52:3D:97:7F:14
-#    Status: Signed
-#    Expiration: 2021-11-09T23:18:24Z
-#
-#spravi:
-
-#'{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":##{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}' #odpoved zo smart-proxy 
-
-# + no idea kde nasiel ten z puppetu 
-
-  "Failed to list certificates"
-#zaloguj event
   logger.info('Failed to list certificates')
-
-#make a hash, store it
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
   t = Task.new("/puppet/ca","get", nil, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  #t.to_hash.to_yaml
+  taskarray.push(x)
   "Failed to list certificates"
 end
 
 get "/puppet/ca/autosign" do #list of all puppet autosign entires
-  string = '["Failed to list puppet autosign entries"]' #nieco vypis..correctly co to si ulozis v metode nizsie
   logger.info('Failed to list puppet autosign entries')
-  #content_type :json
-  #Proxy::PuppetCa.autosign_list.to_json
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
   t = Task.new("/puppet/ca/autosign","get", nil, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  t.to_hash.to_yaml
+  taskarray.push(x)
+  "Failed to list puppet autosign entries"
 end
 
 post "/puppet/ca/autosign/:certname" do #Add certname to Puppet autosign
-  arr << :certname
-  "Failed to add certname to Puppet autosign"
-  #zaloguj event
+  arr = params[:certname]
   logger.info('Failed to add certname to Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/:certname","post", arr, time , "none")
+  t = Task.new("/puppet/ca/autosign/"+arr,"post", arr, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  #t.to_hash.to_yaml
+  taskarray.push(x)
+  "Failed to add certname to Puppet autosign"
 end
 
 delete "/puppet/ca/autosign/:certname" do #Remove certname from Puppet autosign	
-  arr << :certname
-  "Failed to delete certname from Puppet autosign"
-  #zaloguj event
+  arr = params[:certname]
   logger.info('Failed to delete certname from Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/:cername","delete", arr, time , "none")
+  t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  #t.to_hash.to_yaml
+  taskarray.push(x)
+  "Failed to delete certname from Puppet autosign"
 end
 
 post "/puppet/ca/:certname" do #Sign pending certificate request
-  #content_type :json
-  #certname = params[:certname]
-  #Proxy::PuppetCa.sign(certname)
-
-  arr << :certname
-  "Failed to sign certname"
-  #zaloguj event
+  arr = params[:certname]
   logger.info('Failed to sign certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/:cername","post", arr, time , "none")
+  t = Task.new("/puppet/ca/"+arr,"post", arr, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  t.to_hash.to_yaml
+  taskarray.push(x)
+  "Failed to sign certname"
 end
 
 delete "/puppetca/:certname" do #Remove (clean) and revoke a certificate
-  #content_type :json
-  #certname = params[:certname]
-  #Proxy::PuppetCa.clean(certname)
-  arr << :certname
-  "Failed to delete certname"
-  #zaloguj event
+  arr = params[:certname]
   logger.info('Failed to delete certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/:cername","delete", arr, time , "none")
+  t = Task.new("/puppet/ca/"+arr,"delete", arr, time , "none")
   x = t.to_hash
-  File.open("/tmp/test.yml","a") do |file|
-    file.write x.to_yaml
-  end 
-  t.to_hash.to_yaml
+  taskarray.push(x)
+  "Failed to delete certname"
 end
