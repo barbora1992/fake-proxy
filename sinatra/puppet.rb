@@ -2,13 +2,13 @@
 module Puppet
   def self.registered(app)
 
-post "/puppet/run" do #does not work
-  'puppetrun'
-end
+    app.post "/puppet/run" do #does not work
+      'puppetrun'
+    end
 
-get "/puppet/environments" do
-  'env'
-end
+    app.get "/puppet/environments" do
+      'env'
+    end
 
 #get "/puppet/environments/:environment" do
 #end
@@ -20,6 +20,6 @@ end
 #end
 
 
+  end
 end
-register Puppet
 
