@@ -107,3 +107,39 @@ I, [2017-03-07T22:20:28.218420 #3351]  INFO -- : Failed to list certificates
 I, [2017-03-07T22:20:28.352213 #3351]  INFO -- : Failed to list certificates
 I, [2017-03-07T22:25:25.514443 #3351]  INFO -- : Failed to list certificates
 I, [2017-03-07T22:25:52.050883 #3351]  INFO -- : listing features
+I, [2017-03-07T23:35:35.178676 #7083]  INFO -- : listing version
+I, [2017-03-07T23:44:01.673540 #7083]  INFO -- : hello
+I, [2017-03-07T23:52:14.066045 #7083]  INFO -- : listing version
+I, [2017-03-07T23:52:14.156783 #7083]  INFO -- : listing logs
+I, [2017-03-07T23:52:14.687298 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-07T23:52:15.377000 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-07T23:52:15.762248 #7083]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-07T23:52:16.057740 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:04:58.292984 #7083]  INFO -- : listing logs
+I, [2017-03-08T00:04:58.739729 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:04:59.442165 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:04:59.702437 #7083]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-08T00:05:00.008693 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:05:00.568803 #7083]  INFO -- : listing version
+I, [2017-03-08T00:08:24.074840 #7083]  INFO -- : listing logs
+I, [2017-03-08T00:08:24.893303 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:08:25.352905 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:08:25.614394 #7083]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-08T00:08:25.895019 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:08:26.366277 #7083]  INFO -- : listing version
+I, [2017-03-08T00:12:23.093276 #7083]  INFO -- : listing version
+I, [2017-03-08T00:24:43.980568 #7083]  INFO -- : listing version
+I, [2017-03-08T00:24:44.073682 #7083]  INFO -- : listing logs
+I, [2017-03-08T00:24:45.198962 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:24:45.386532 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T00:24:45.574594 #7083]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-08T00:24:45.800822 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T11:46:19.893930 #7083]  INFO -- : listing version
+I, [2017-03-08T11:46:22.653149 #7083]  INFO -- : listing logs
+I, [2017-03-08T11:46:23.020696 #7083]  INFO -- : listing logs
+I, [2017-03-08T11:46:23.107461 #7083]  INFO -- : listing logs
+I, [2017-03-08T11:46:23.160644 #7083]  INFO -- : listing logs
+I, [2017-03-08T11:46:23.221029 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T11:46:23.473841 #7083]  INFO -- : Failed to list certificates
+I, [2017-03-08T11:46:23.723343 #7083]  INFO -- : Failed to list puppet autosign entries
+I, [2017-03-08T11:46:23.974837 #7083]  INFO -- : Failed to list certificates

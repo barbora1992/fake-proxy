@@ -20,7 +20,8 @@ require './puppet.rb'
 register Puppet
 
 taskarray = Array.new
-#taskarray2 = Array.new
+TASK_ARRAY = Array.new
+
 
 #****************Class Task
 class Task 
@@ -35,15 +36,29 @@ class Task
   
   #ruby ma svoju to_hash metodu ale s tou mi nefungovalo uuid
   def to_hash
-  Hash["type" => @type, "operation" => @operation, "param" => @param, "date" => @date, "status" => @status, "uuid" => @uuid]
+    Hash["type" => @type, "operation" => @operation, "param" => @param, "date" => @date, "status" => @status, "uuid" => @uuid]
   end
 end
+
+class TaskQueue
+  def initialize
+    @queue = []
+  end
+
+  def enqueue(task)
+    @queue.push task
+  end
+
+  def export
+    
+  end
+
+end
+
 #****************************
 
-
 get '/' do #nepodstatne
-  logger.info('hello')
-  'Hello world!'
+  erb :webui
 end
 
 get "/features" do #foreman wants to know - hardcoded
@@ -71,7 +86,7 @@ end
 get "/logs/" do
   logger.info('listing logs')
   content_type :json 
-  logger.to_json	
+  {"logs": logger.to_json }
 end
 
 post "/posttest/:testval" do
@@ -81,9 +96,7 @@ end
 
 ##################################WEBUI#######################################################
 
-get '/webui' do 
-  erb :webui
-end
+
 
 get '/downloadtasks' do 
   if File.file?("/tmp/test.yml")
@@ -104,13 +117,13 @@ get '/deletetasks' do
 end
 
 get '/listtasks' do #display UNSAVED list
-  erb :something #y u no work
+  erb :list, :locals => { :buffer => taskarray } #y u no work
 end
 
-get '/savetasks' do
+get '/savetasks' do #The request-level send_data method is no longer supported.
   File.open("/tmp/test.yml","w") do |file|
     taskarray.each do |task|
-      t = task 
+      task["status"] = "saved" 
       file.write task.to_yaml
     end
   end
@@ -124,7 +137,7 @@ end
 post '/deletetaskuuid' do 
   u = params[:uuid]
   taskarray.delete_if { |h| h["uuid"] == u }
-  redirect '/webui'
+  redirect '/'
 end
 
 '''
@@ -146,7 +159,7 @@ end
 get "/puppet/ca" do #list of all puppet certificates
   logger.info('Failed to list certificates')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca","get", nil, time , "none")
+  t = Task.new("/puppet/ca","get", nil, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to list certificates"
@@ -155,7 +168,7 @@ end
 get "/puppet/ca/autosign" do #list of all puppet autosign entires
   logger.info('Failed to list puppet autosign entries')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign","get", nil, time , "none")
+  t = Task.new("/puppet/ca/autosign","get", nil, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to list puppet autosign entries"
@@ -165,7 +178,7 @@ post "/puppet/ca/autosign/:certname" do #Add certname to Puppet autosign
   arr = params[:certname]
   logger.info('Failed to add certname to Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/"+arr,"post", arr, time , "none")
+  t = Task.new("/puppet/ca/autosign/"+arr,"post", arr, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to add certname to Puppet autosign"
@@ -175,7 +188,7 @@ delete "/puppet/ca/autosign/:certname" do #Remove certname from Puppet autosign
   arr = params[:certname]
   logger.info('Failed to delete certname from Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr, time , "none")
+  t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to delete certname from Puppet autosign"
@@ -185,7 +198,7 @@ post "/puppet/ca/:certname" do #Sign pending certificate request
   arr = params[:certname]
   logger.info('Failed to sign certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/"+arr,"post", arr, time , "none")
+  t = Task.new("/puppet/ca/"+arr,"post", arr, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to sign certname"
@@ -195,7 +208,7 @@ delete "/puppetca/:certname" do #Remove (clean) and revoke a certificate
   arr = params[:certname]
   logger.info('Failed to delete certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/"+arr,"delete", arr, time , "none")
+  t = Task.new("/puppet/ca/"+arr,"delete", arr, time , "new")
   x = t.to_hash
   taskarray.push(x)
   "Failed to delete certname"
