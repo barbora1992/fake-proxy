@@ -32,7 +32,7 @@ OptionParser.new do |opt|
   opt.on('-i', '--input-file INPUTFILE', 'The input file') { |o| options.input_file = o }
   opt.on('-o', '--output-file OUTPUTFILE', 'The output file') { |o| options.output_file = o }
   opt.on('-p', '--proxy-address PROXYADDRESS', 'Address of the proxy you want to use') { |o| options.proxy_address = o }
-  opt.on('-u', '--uuid UUID', 'UUID of the task') { |o| options.uuid = o }
+  #opt.on('-u', '--uuid UUID', 'UUID of the task') { |o| options.uuid = o }
 end.parse!
 
 load_tasks(options.input_file)
