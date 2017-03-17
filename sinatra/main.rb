@@ -59,7 +59,7 @@ end
 
 get '/file' do 
   buffer.each do |task|  
-    task.status = "saved" #TODO this stopped working since the Task/TaskQueue classes were separated
+    task.status = "saved" 
   end
   content_type 'plain/text'
   attachment "tasks.yaml"

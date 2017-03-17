@@ -17,8 +17,8 @@ class TaskQueue
     @queue.clear
   end
   
-  def each
-    @queue.each
+  def each(&block)
+    @queue.each(&block)
   end
 
   def to_yaml

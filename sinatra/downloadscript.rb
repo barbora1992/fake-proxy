@@ -13,13 +13,11 @@ OptionParser.new do |opt|
 end.parse!
 
 if options.action == "download" 
-  File.open(options.output_file, 'w') {|f|
-    block = proc { |response|
-      response.read_body do |chunk|
-        puts "Working on response" 
-        f.write chunk
-      end
-    }
-    RestClient::Request.new(method: :get, url: options.proxy_address + '/file', block_response: block).execute
-}
+  #puts options.proxy_address
+  data = RestClient::Request.execute(:method => :get, :url => options.proxy_address + '/file', :timeout => 3600)
+  file = File.new(options.output_file, 'w')
+  file.write data
+  file.close
 end
+
+

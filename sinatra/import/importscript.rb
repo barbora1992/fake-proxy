@@ -6,8 +6,11 @@ require 'rest-client'
 require 'pry'
 require_relative "task"
 require_relative "taskqueue"
+require_relative "taskresponse"
+require_relative "taskresponsequeue"
 
 @buffer = TaskQueue.new #why do i have to make global variable here, and not in main? 
+@responses = TaskResponseQueue.new
 
 def load_tasks(filename)
   if File.file?(filename)
@@ -26,7 +29,8 @@ end
 options = OpenStruct.new
 OptionParser.new do |opt|
   opt.on('-a', '--action ACTION', 'Action you want to take: send, list') { |o| options.action = o }
-  opt.on('-f', '--input-file INPUTFILE', 'The input file') { |o| options.input_file = o }
+  opt.on('-i', '--input-file INPUTFILE', 'The input file') { |o| options.input_file = o }
+  opt.on('-o', '--output-file OUTPUTFILE', 'The output file') { |o| options.output_file = o }
   opt.on('-p', '--proxy-address PROXYADDRESS', 'Address of the proxy you want to use') { |o| options.proxy_address = o }
   opt.on('-u', '--uuid UUID', 'UUID of the task') { |o| options.uuid = o }
 end.parse!
@@ -34,11 +38,26 @@ end.parse!
 load_tasks(options.input_file)
 
 if options.action == "send" 
-  puts "sending all tasks"  
-  @buffer.each do |item|
-    item.send_to_proxy(options.proxy_address)
-  end	
+  puts "sending all tasks"
+  @buffer.each do |task|  
+    response = task.send_to_proxy(options.proxy_address)
+    #puts response.body
+    tmp = TaskResponse.new(response, task.uuid)
+    @responses.enqueue(tmp)
+  end
+  file = File.new(options.output_file, 'w')
+  file.write @responses.to_yaml
+  file.close
+  #puts @responses.to_yaml
   else options.action == "list"  
     puts "listing the tasks:" 
     puts @buffer.to_yaml
 end
+
+
+
+
+
+
+
+

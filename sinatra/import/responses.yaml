@@ -1,0 +1,371 @@
+---
+- !ruby/object:TaskResponse
+  response: !ruby/string:RestClient::Response
+    str: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
+    net_http_res: !ruby/object:Net::HTTPOK
+      http_version: '1.1'
+      code: '200'
+      message: 'OK '
+      header:
+        content-type:
+        - application/json
+        content-length:
+        - '237'
+        x-content-type-options:
+        - nosniff
+        server:
+        - WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+        date:
+        - Fri, 17 Mar 2017 22:05:19 GMT
+        connection:
+        - Keep-Alive
+      body: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
+      read: true
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca"
+        query: 
+        opaque: 
+        fragment: 
+        parser: &1 !ruby/object:URI::RFC3986_Parser
+          regexp:
+            :SCHEME: !ruby/regexp /\A[A-Za-z][A-Za-z0-9+\-.]*\z/
+            :USERINFO: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=A-Z_a-z~])*\z/
+            :HOST: !ruby/regexp /\A(?:(?<IP-literal>\[(?:(?<IPv6address>(?:\h{1,4}:){6}(?<ls32>\h{1,4}:\h{1,4}|(?<IPv4address>(?<dec-octet>[1-9]\d|1\d{2}|2[0-4]\d|25[0-5]|\d)\.\g<dec-octet>\.\g<dec-octet>\.\g<dec-octet>))|::(?:\h{1,4}:){5}\g<ls32>|\h{,4}::(?:\h{1,4}:){4}\g<ls32>|(?:(?:\h{1,4}:)?\h{1,4})?::(?:\h{1,4}:){3}\g<ls32>|(?:(?:\h{1,4}:){,2}\h{1,4})?::(?:\h{1,4}:){2}\g<ls32>|(?:(?:\h{1,4}:){,3}\h{1,4})?::\h{1,4}:\g<ls32>|(?:(?:\h{1,4}:){,4}\h{1,4})?::\g<ls32>|(?:(?:\h{1,4}:){,5}\h{1,4})?::\h{1,4}|(?:(?:\h{1,4}:){,6}\h{1,4})?::)|(?<IPvFuture>v\h+\.[!$&-.0-;=A-Z_a-z~]+))\])|\g<IPv4address>|(?<reg-name>(?:%\h\h|[!$&-.0-9;=A-Z_a-z~])*))\z/
+            :ABS_PATH: !ruby/regexp /\A\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*(?:\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*)*\z/
+            :REL_PATH: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~])+(?:\/(?:%\h\h|[!$&-.0-;=@-Z_a-z~])*)*\z/
+            :QUERY: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~\/?])*\z/
+            :FRAGMENT: !ruby/regexp /\A(?:%\h\h|[!$&-.0-;=@-Z_a-z~\/?])*\z/
+            :OPAQUE: !ruby/regexp /\A(?:[^\/].*)?\z/
+            :PORT: !ruby/regexp /\A[\x09\x0a\x0c\x0d ]*\d*[\x09\x0a\x0c\x0d ]*\z/
+      decode_content: false
+      socket: 
+      body_exist: true
+    request: !ruby/object:RestClient::Request
+      method: get
+      headers: {}
+      url: http://localhost:8000/puppet/ca
+      password: 
+      user: 
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      cookie_jar: !ruby/object:HTTP::CookieJar
+        store: !ruby/object:HTTP::CookieJar::HashStore
+          mon_owner: 
+          mon_count: 0
+          mon_mutex: !ruby/object:Thread::Mutex {}
+          logger: 
+          gc_threshold: 150
+          jar: {}
+          gc_index: 0
+      payload: 
+      read_timeout: 3600
+      open_timeout: 3600
+      block_response: 
+      raw_response: false
+      ssl_opts:
+        :verify_ssl: 1
+      tf: 
+      max_redirects: 10
+      processed_headers:
+        Accept: "*/*"
+        Accept-Encoding: gzip, deflate
+        User-Agent: rest-client/2.0.0 (linux-gnu x86_64) ruby/2.3.1p112
+      args:
+        :method: :get
+        :url: localhost:8000/puppet/ca
+        :timeout: 3600
+      before_execution_proc: 
+    history: []
+    headers:
+      :content_type: application/json
+      :content_length: '237'
+      :x_content_type_options: nosniff
+      :server: WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+      :date: Fri, 17 Mar 2017 22:05:19 GMT
+      :connection: Keep-Alive
+    code: 200
+  uuid: bbb5348b5269a5b403c6
+- !ruby/object:TaskResponse
+  response: !ruby/string:RestClient::Response
+    str: '["test","auto1","hello"]'
+    net_http_res: !ruby/object:Net::HTTPOK
+      http_version: '1.1'
+      code: '200'
+      message: 'OK '
+      header:
+        content-type:
+        - application/json
+        content-length:
+        - '24'
+        x-content-type-options:
+        - nosniff
+        server:
+        - WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+        date:
+        - Fri, 17 Mar 2017 22:05:19 GMT
+        connection:
+        - Keep-Alive
+      body: '["test","auto1","hello"]'
+      read: true
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca/autosign"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      decode_content: false
+      socket: 
+      body_exist: true
+    request: !ruby/object:RestClient::Request
+      method: get
+      headers: {}
+      url: http://localhost:8000/puppet/ca/autosign
+      password: 
+      user: 
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca/autosign"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      cookie_jar: !ruby/object:HTTP::CookieJar
+        store: !ruby/object:HTTP::CookieJar::HashStore
+          mon_owner: 
+          mon_count: 0
+          mon_mutex: !ruby/object:Thread::Mutex {}
+          logger: 
+          gc_threshold: 150
+          jar: {}
+          gc_index: 0
+      payload: 
+      read_timeout: 3600
+      open_timeout: 3600
+      block_response: 
+      raw_response: false
+      ssl_opts:
+        :verify_ssl: 1
+      tf: 
+      max_redirects: 10
+      processed_headers:
+        Accept: "*/*"
+        Accept-Encoding: gzip, deflate
+        User-Agent: rest-client/2.0.0 (linux-gnu x86_64) ruby/2.3.1p112
+      args:
+        :method: :get
+        :url: localhost:8000/puppet/ca/autosign
+        :timeout: 3600
+      before_execution_proc: 
+    history: []
+    headers:
+      :content_type: application/json
+      :content_length: '24'
+      :x_content_type_options: nosniff
+      :server: WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+      :date: Fri, 17 Mar 2017 22:05:19 GMT
+      :connection: Keep-Alive
+    code: 200
+  uuid: 62f4cce5e67483dfacfb
+- !ruby/object:TaskResponse
+  response: !ruby/string:RestClient::Response
+    str: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
+    net_http_res: !ruby/object:Net::HTTPOK
+      http_version: '1.1'
+      code: '200'
+      message: 'OK '
+      header:
+        content-type:
+        - application/json
+        content-length:
+        - '237'
+        x-content-type-options:
+        - nosniff
+        server:
+        - WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+        date:
+        - Fri, 17 Mar 2017 22:05:20 GMT
+        connection:
+        - Keep-Alive
+      body: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
+      read: true
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      decode_content: false
+      socket: 
+      body_exist: true
+    request: !ruby/object:RestClient::Request
+      method: get
+      headers: {}
+      url: http://localhost:8000/puppet/ca
+      password: 
+      user: 
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      cookie_jar: !ruby/object:HTTP::CookieJar
+        store: !ruby/object:HTTP::CookieJar::HashStore
+          mon_owner: 
+          mon_count: 0
+          mon_mutex: !ruby/object:Thread::Mutex {}
+          logger: 
+          gc_threshold: 150
+          jar: {}
+          gc_index: 0
+      payload: 
+      read_timeout: 3600
+      open_timeout: 3600
+      block_response: 
+      raw_response: false
+      ssl_opts:
+        :verify_ssl: 1
+      tf: 
+      max_redirects: 10
+      processed_headers:
+        Accept: "*/*"
+        Accept-Encoding: gzip, deflate
+        User-Agent: rest-client/2.0.0 (linux-gnu x86_64) ruby/2.3.1p112
+      args:
+        :method: :get
+        :url: localhost:8000/puppet/ca
+        :timeout: 3600
+      before_execution_proc: 
+    history: []
+    headers:
+      :content_type: application/json
+      :content_length: '237'
+      :x_content_type_options: nosniff
+      :server: WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+      :date: Fri, 17 Mar 2017 22:05:20 GMT
+      :connection: Keep-Alive
+    code: 200
+  uuid: 85fed7490be8cbe25421
+- !ruby/object:TaskResponse
+  response: !ruby/string:RestClient::Response
+    str: '["test","auto1","hello"]'
+    net_http_res: !ruby/object:Net::HTTPOK
+      http_version: '1.1'
+      code: '200'
+      message: 'OK '
+      header:
+        content-type:
+        - application/json
+        content-length:
+        - '24'
+        x-content-type-options:
+        - nosniff
+        server:
+        - WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+        date:
+        - Fri, 17 Mar 2017 22:05:20 GMT
+        connection:
+        - Keep-Alive
+      body: '["test","auto1","hello"]'
+      read: true
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca/autosign"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      decode_content: false
+      socket: 
+      body_exist: true
+    request: !ruby/object:RestClient::Request
+      method: get
+      headers: {}
+      url: http://localhost:8000/puppet/ca/autosign
+      password: 
+      user: 
+      uri: !ruby/object:URI::HTTP
+        scheme: http
+        user: 
+        password: 
+        host: localhost
+        port: 8000
+        path: "/puppet/ca/autosign"
+        query: 
+        opaque: 
+        fragment: 
+        parser: *1
+      cookie_jar: !ruby/object:HTTP::CookieJar
+        store: !ruby/object:HTTP::CookieJar::HashStore
+          mon_owner: 
+          mon_count: 0
+          mon_mutex: !ruby/object:Thread::Mutex {}
+          logger: 
+          gc_threshold: 150
+          jar: {}
+          gc_index: 0
+      payload: 
+      read_timeout: 3600
+      open_timeout: 3600
+      block_response: 
+      raw_response: false
+      ssl_opts:
+        :verify_ssl: 1
+      tf: 
+      max_redirects: 10
+      processed_headers:
+        Accept: "*/*"
+        Accept-Encoding: gzip, deflate
+        User-Agent: rest-client/2.0.0 (linux-gnu x86_64) ruby/2.3.1p112
+      args:
+        :method: :get
+        :url: localhost:8000/puppet/ca/autosign
+        :timeout: 3600
+      before_execution_proc: 
+    history: []
+    headers:
+      :content_type: application/json
+      :content_length: '24'
+      :x_content_type_options: nosniff
+      :server: WEBrick/1.3.1 (Ruby/2.3.1/2016-04-26) OpenSSL/1.0.2h
+      :date: Fri, 17 Mar 2017 22:05:20 GMT
+      :connection: Keep-Alive
+    code: 200
+  uuid: 925aa8b983b5cc11def5

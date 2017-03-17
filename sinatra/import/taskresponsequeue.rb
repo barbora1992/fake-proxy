@@ -1,8 +1,6 @@
 require 'yaml'
 
-class TaskQueue
-  include Enumerable
-
+class TaskResponseQueue
   def initialize
     @queue = Array.new
   end
