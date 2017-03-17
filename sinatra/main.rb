@@ -8,208 +8,137 @@ require 'yaml'
 require 'sinatra/base'
 require 'sinatra/flash'
 require 'securerandom'
+require 'pry'
+require 'logger' 
+require "sinatra/streaming"
 
-enable :sessions
-register Sinatra::Flash
+require_relative "task"
+require_relative "taskqueue"
+
 set :bind, '0.0.0.0'
 enable :logging #works
 #set :logger #nope
-require 'logger'
-logger = Logger.new('/home/barbora/fake-proxy/sinatra/app.error.log')
-require './puppet.rb'
-register Puppet
 
-taskarray = Array.new
-TASK_ARRAY = Array.new
+logger = Logger.new('/tmp/app.error.log')
+buffer = TaskQueue.new
 
 
-#****************Class Task
-class Task 
-  def initialize(type, operation, param, date, status) #typ (napr /puppet/ca), operacia (post del get) a nazov cert
-    @type = type
-    @operation = operation
-    @param = param
-    @date = date
-    @status = status
-    @uuid = SecureRandom.hex(10) 
-  end
-  
-  #ruby ma svoju to_hash metodu ale s tou mi nefungovalo uuid
-  def to_hash
-    Hash["type" => @type, "operation" => @operation, "param" => @param, "date" => @date, "status" => @status, "uuid" => @uuid]
-  end
-end
+##################################WEBUI######################################################
 
-class TaskQueue
-  def initialize
-    @queue = []
-  end
-
-  def enqueue(task)
-    @queue.push task
-  end
-
-  def export
-    
-  end
-
-end
-
-#****************************
-
-get '/' do #nepodstatne
+get '/' do 
   erb :webui
 end
 
-get "/features" do #foreman wants to know - hardcoded
+get "/features" do 
   logger.info('listing features')	        
   '["logs","puppetca"]'
 end
 
-get "/version" do #nepodstatne
+get "/version" do 
   logger.info('listing version')
-  '{"version":"1.14.0-develop","modules":{"logs":"1.14.0", "puppet":"1.14.0"}}' #nezaklada sa na pravde
+  '{"version":"1.14.0-develop","modules":{"puppetca":"1.14.0","logs":"1.14.0"}}' #imaginary
 end
 
-get "/ping" do #na normalnej proxy ping je undefined aj ked foreman sa to obcas pyta? (aspon vo logs to je vidno ze sa pyta..)
-  logger.info('ping')
-  'hello' 
-end
-
-get "/hashtest" do
-  t = Task.new("a","b","c","d","e")
-  x = t.to_hash
-  taskarray.push(x)
-  "hello"
-end
-
-get "/logs/" do
+get "/logs/" do #TODO it just doesnt want to work - it used to, but now it doesnt
   logger.info('listing logs')
   content_type :json 
+  #logger.to_json
+  #binding.pry 
   {"logs": logger.to_json }
+  #'{}'
 end
 
-post "/posttest/:testval" do
-  title = params[:testval]
-  title
-end
-
-##################################WEBUI#######################################################
-
-
-
-get '/downloadtasks' do 
-  if File.file?("/tmp/test.yml")
-    time = Time.now.strftime('%Y_%m_%d_%H%M%S')
-    send_file "/tmp/test.yml", :filename => "tasklist"+time+".yaml", :type => 'Application/octet-stream'
-  else 
-    erb :error
-  end
-end
-
-get '/deletetasks' do
-  if File.file?("/tmp/test.yml")
-    File.delete("/tmp/test.yml") #zatial aby nemazalo pravy subor
-    erb :success
-  else 
-    erb :error
-  end
-end
-
-get '/listtasks' do #display UNSAVED list
-  erb :list, :locals => { :buffer => taskarray } #y u no work
-end
-
-get '/savetasks' do #The request-level send_data method is no longer supported.
-  File.open("/tmp/test.yml","w") do |file|
-    taskarray.each do |task|
-      task["status"] = "saved" 
-      file.write task.to_yaml
-    end
-  end
+get '/clear' do #delete 'tasks'
+  buffer.clear
   erb :success
 end
 
-get '/deleteuuid' do
+get '/tasks' do #get 'tasks'
+  erb :list, :locals => { :buffer => buffer } 
+end
+
+get '/file' do 
+  buffer.each do |task|  
+    task.status = "saved" #TODO this stopped working since the Task/TaskQueue classes were separated
+  end
+  content_type 'plain/text'
+  attachment "tasks.yaml"
+  buffer.to_yaml
+end
+
+get '/deleteuuid' do 
   erb :deleteuuid
 end
 
 post '/deletetaskuuid' do 
   u = params[:uuid]
-  taskarray.delete_if { |h| h["uuid"] == u }
+  buffer.delete_task_by_uuid(u)
   redirect '/'
 end
 
-'''
-get /deletesingletask do #delete task by uuid..bude potrebovat dialog
-  erb :todo
+get '/preload' do 
+  t = Task.new("/puppet/ca","get", nil)
+  buffer.enqueue(t)
+  s = Task.new("/puppet/ca/autosign","get", nil) 
+  buffer.enqueue(s)
+  redirect '/'
 end
-
-get /inserttask do #manually insert a task? formular? 
-  erb :todo
-end
-
-get /deletealltasks do #delete all unsaved tasks
-  erb :todo
-end
-'''
 
 ###############################PUPPETCA#####################################################
 
-get "/puppet/ca" do #list of all puppet certificates
+get "/puppet/ca" do 
   logger.info('Failed to list certificates')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca","get", nil, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to list certificates"
+  t = Task.new("/puppet/ca","get", nil)
+  buffer.enqueue(t)
+  "{}" #this works
 end
 
 get "/puppet/ca/autosign" do #list of all puppet autosign entires
   logger.info('Failed to list puppet autosign entries')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign","get", nil, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to list puppet autosign entries"
+  t = Task.new("/puppet/ca/autosign","get", nil)
+  buffer.enqueue(t)
+  "{}" #this works
 end
 
 post "/puppet/ca/autosign/:certname" do #Add certname to Puppet autosign
   arr = params[:certname]
   logger.info('Failed to add certname to Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/"+arr,"post", arr, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to add certname to Puppet autosign"
+  t = Task.new("/puppet/ca/autosign/"+arr,"post", arr)
+  buffer.enqueue(t)
+  content_type 'application/json' #thats how smart-proxy replies
+  response.status = 404
 end
 
 delete "/puppet/ca/autosign/:certname" do #Remove certname from Puppet autosign	
   arr = params[:certname]
   logger.info('Failed to delete certname from Puppet autosign')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to delete certname from Puppet autosign"
+  t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr)
+  buffer.enqueue(t)
+  content_type 'application/json'
+  response.status = 404
 end
 
 post "/puppet/ca/:certname" do #Sign pending certificate request
   arr = params[:certname]
   logger.info('Failed to sign certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/"+arr,"post", arr, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to sign certname"
+  t = Task.new("/puppet/ca/"+arr,"post", arr)
+  buffer.enqueue(t)
+  content_type 'application/json'
+  response.status = 404
 end
 
-delete "/puppetca/:certname" do #Remove (clean) and revoke a certificate
+delete "/puppet/ca/:certname" do #Remove (clean) and revoke a certificate
   arr = params[:certname]
   logger.info('Failed to delete certname')
   time = Time.now.strftime('%Y%m%d%H%M%S%L')
-  t = Task.new("/puppet/ca/"+arr,"delete", arr, time , "new")
-  x = t.to_hash
-  taskarray.push(x)
-  "Failed to delete certname"
+  t = Task.new("/puppet/ca/"+arr,"delete", arr)
+  buffer.enqueue(t)
+  content_type 'application/json'
+  response.status = 404
 end
+

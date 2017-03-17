@@ -1,0 +1,25 @@
+---
+- type: "/puppet/ca"
+  operation: get
+  param: 
+  date: '20170308114623221'
+  status: new
+  uuid: c1e71de371cb03d2ccd0
+- type: "/puppet/ca"
+  operation: get
+  param: 
+  date: '20170308114623473'
+  status: new
+  uuid: 0b7600867b88874bef77
+- type: "/puppet/ca/autosign"
+  operation: get
+  param: 
+  date: '20170308114623723'
+  status: new
+  uuid: e2134ef500a1c20f8295
+- type: "/puppet/ca"
+  operation: get
+  param: 
+  date: '20170308114623974'
+  status: new
+  uuid: cee5994bd6c94d285091
