@@ -14,11 +14,10 @@ require_relative "taskresponsequeue"
 
 def load_tasks(filename)
   if File.file?(filename)
-    items = Array.new
+    #items = Array.new
     items = YAML.load_file(filename)
     items.each do |item|
-      tmp = Task.new(item.action, item.method, item.parameters, item.date, item.status, item.uuid)
-      #x = tmp.to_hash
+      tmp = TaskResponse.new(item.action, item.method, item.parameters, item.date, item.status, item.uuid)
       @buffer.enqueue(tmp)
     end
   else 
@@ -41,8 +40,8 @@ if options.action == "send"
   puts "sending all tasks"
   @buffer.each do |task|  
     response = task.send_to_proxy(options.proxy_address)
-    puts response.body
-    tmp = TaskResponse.new(response.body, task.action, task.uuid, "answered", task.method)
+    #puts response.body
+    tmp = TaskResponse.new(response, task.uuid)
     @responses.enqueue(tmp)
   end
   file = File.new(options.output_file, 'w')
@@ -53,6 +52,10 @@ if options.action == "send"
     puts "listing the tasks:" 
     puts @buffer.to_yaml
 end
+
+
+
+
 
 
 

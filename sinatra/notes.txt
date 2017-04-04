@@ -1,0 +1,19 @@
+downloadscript.rb:18: warning: File::new() does not take block; use File::open() instead
+
+chceme responses nahrat do original bufferu? alebo do vlastneho? original sounds nice (aspon sa vyuziju statusy) aleee potom sa uz responded ulohy budu zase exportovat atd
+original by bol nice s tym ze ak zavolame upload viackrat, tak vzdy len pridavame ulohy therefore unless proxy crashes (a zmaze sa buffer) tak sa to tam moze kludne hromadit....dokonca by sa dalo pridat ku kazdej response aj time when added a ked budu napr polhodinu stare tak sa (v pripade hladania typu dotycnej odpovede) preskoci, nastavi ako expired etc
+ak mame viacej rovnakych queries v responses tak zatil vraciame random - mozeme pridat time aby sme vracali oldest (but not expired) alebo newest
+
+browse -> upload file? paperclip? 
+
+
+
+/home/barbora/fake-proxy/sinatra/import/responsestoout2.yaml
+
+
+musim mat ulozene polia pre certifikaty?
+
+
+kedze mozem viackrat nacitat rovnake responses, pri expiracii musim preiterovat cele responses a expirovat VSETKY ktore maju pouzite uuid responses.expire - done
+
+treba oznacit done tasks as done v bufferi - mazeme? 
