@@ -39,8 +39,11 @@ post '/responses' do
     items = Array.new
     items = YAML.load_file(u)
     items.each do |item|
-      tmp = TaskResponse.new(item.response, item.query, item.uuid, item.status, item.method)
-      responses.enqueue(tmp)
+      if buffer.task_exists(item.uuid)
+        buffer.delete_task_by_uuid(item.uuid) #purge old versions by uuid, no need to store time in task response, it just deletes all of them, stores the newest one
+        tmp = TaskResponse.new(item.response, item.query, item.uuid, item.status, item.method)
+        responses.enqueue(tmp)
+      end
     end
   else 
     erb :error
@@ -117,13 +120,16 @@ get "/puppet/ca" do
   r = responses.find_by_query("/puppet/ca")
   if r == nil 
     logger.info('Failed to list certificates')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca","get", nil)
     buffer.enqueue(t)
-    "{}" #this works
+    #"{}" #this works
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
     else 
-      responses.expire(r.uuid)
-      r.response 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
   
 end
@@ -132,13 +138,16 @@ get "/puppet/ca/autosign" do #list of all puppet autosign entires
   r = responses.find_by_query("/puppet/ca/autosign")
   if r == nil 
     logger.info('Failed to list puppet autosign entries')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca/autosign","get", nil)
     buffer.enqueue(t)
-    "{}" #this works
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
     else 
-      responses.expire(r.uuid)
-      r.response
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
 end
 
@@ -149,14 +158,15 @@ post "/puppet/ca/autosign/:certname" do #Add certname to Puppet autosign
   r = responses.find_by_query_and_method("/puppet/ca/autosign/"+arr, "post")
   if r == nil 
     logger.info('Failed to add certname to Puppet autosign')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca/autosign/"+arr,"post", arr)
     buffer.enqueue(t)
     content_type 'application/json' #thats how smart-proxy replies
-    response.status = 404
+    response.status = 503
     else
-      responses.expire(r.uuid)
-      r.response
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
 end
 
@@ -165,14 +175,15 @@ delete "/puppet/ca/autosign/:certname" do #Remove certname from Puppet autosign
   r = responses.find_by_query_and_method("/puppet/ca/autosign/"+arr, "delete")
   if r == nil 
     logger.info('Failed to delete certname from Puppet autosign')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca/autosign/"+arr,"delete", arr)
     buffer.enqueue(t)
     content_type 'application/json'
-    response.status = 404
+    response.status = 503
     else  
-      responses.expire(r.uuid)
-      r.response
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
 end
 
@@ -180,17 +191,18 @@ end
 
 post "/puppet/ca/:certname" do #Sign pending certificate request
   arr = params[:certname]
-  r = responses.find_by_query_and_method("/puppet/ca/"+arr, "delete")
+  r = responses.find_by_query_and_method("/puppet/ca/"+arr, "post")
   if r == nil 
     logger.info('Failed to sign certname')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca/"+arr,"post", arr)
     buffer.enqueue(t)
     content_type 'application/json'
-    response.status = 404
+    response.status = 503
     else  
-      responses.expire(r.uuid)
-      r.response
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
 end
 
@@ -199,14 +211,255 @@ delete "/puppet/ca/:certname" do #Remove (clean) and revoke a certificate
   r = responses.find_by_query_and_method("/puppet/ca/"+arr, "delete")
   if r == nil 
     logger.info('Failed to delete certname')
-    time = Time.now.strftime('%Y%m%d%H%M%S%L')
     t = Task.new("/puppet/ca/"+arr,"delete", arr)
     buffer.enqueue(t)
     content_type 'application/json'
-    response.status = 404
+    response.status = 503
     else  
-      responses.expire(r.uuid)
-      r.response
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
   end
 end
 
+###############################DHCP#####################################################
+
+get "/dhcp/?" do
+  r = responses.find_by_query("/dhcp/?")
+  if r == nil 
+    logger.info('Failed to get dhcp')
+    t = Task.new("/dhcp/?","get", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+get "/dhcp/:network" do
+  arr = params[:network]
+  r = responses.find_by_query_and_method("/dhcp/"+arr, "get")
+  if r == nil 
+    logger.info('Failed')
+    t = Task.new("/dhcp/"+arr,"get", arr)
+    buffer.enqueue(t)
+    content_type 'application/json'
+    response.status = 503
+    else  
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+get "/dhcp/:network/unused_ip" do
+end
+
+get "/dhcp/:network/:record" do  # Deprecated, returns a single record
+end
+
+get "/dhcp/:network/ip/:ip_address" do # returns an array of records for an ip address
+end
+
+get "/dhcp/:network/mac/:mac_address" do  # returns a record for a mac address
+end
+ 
+post "/dhcp/:network" do  # create a new record in a network
+  arr = params[:network]
+  r = responses.find_by_query_and_method("/dhcp/"+arr, "post")
+  if r == nil 
+    logger.info('Failed')
+    t = Task.new("/dhcp/"+arr,"post", arr)
+    buffer.enqueue(t)
+    content_type 'application/json'
+    response.status = 503
+    else  
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+delete "/dhcp/:network/:record" do  # deprecated, delete a record from a network
+end
+
+delete "/dhcp/:network/ip/:ip_address" do  # deletes all records for an ip address from a network
+end
+
+delete "/dhcp/:network/mac/:mac_address" do  # delete a record for a mac address from a network
+end
+
+###############################DNS#####################################################
+
+post "/dns/?" do
+  r = responses.find_by_query("/dns/?")
+  if r == nil 
+    logger.info('Failed to post dns')
+    t = Task.new("/dns/?","post", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+delete '/dns/:value/?:type?' do
+end
+
+###############################PUPPET_PROXY########################################### #neviem aky prefix - /proxy? /smart-proxy? /puppet-proxy? podla api je to *asi* /puppet ? 
+
+post "/run" do
+  r = responses.find_by_query("/run")
+  if r == nil 
+    logger.info('Failed to run proxy')
+    t = Task.new("/run","post", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+get "/environments" do
+  r = responses.find_by_query("/environments")
+  if r == nil 
+    logger.info('Failed to get environments')
+    t = Task.new("/environments","get", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+get "/environments/:environment" do
+
+end
+
+get "/environments/:environment/classes" do
+end
+
+get "/environments/:environment/classes_and_errors" do
+end
+
+###############################TFTP#####################################################
+
+post "/tftp/fetch_boot_file" do
+  r = responses.find_by_query("/tftp/fetch_boot_file")
+  if r == nil 
+    logger.info('Failed to fetch boot file')
+    t = Task.new("/tftp/fetch_boot_file","post", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+post "/tftp/:variant/create_default" do |variant|
+end
+
+get "/tftp/:variant/:mac" do |variant, mac|
+end
+
+post "/tftp/:variant/:mac" do |variant, mac|
+end
+
+delete "/tftp/:variant/:mac" do |variant, mac|
+end
+
+post "/tftp/create_default" do
+  r = responses.find_by_query("/tftp/create_default")
+  if r == nil 
+    logger.info('Failed to create default')
+    t = Task.new("/tftp/create_default","post", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+post "/tftp/:mac" do |mac|
+  arr = params[:mac]
+  r = responses.find_by_query_and_method("/tftp/"+arr, "post")
+  if r == nil 
+    logger.info('Failed')
+    t = Task.new("/tftp/"+arr,"post", arr)
+    buffer.enqueue(t)
+    content_type 'application/json'
+    response.status = 503
+    else  
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+delete "/tftp/:mac" do |mac|
+  arr = params[:mac]
+  r = responses.find_by_query_and_method("/tftp/"+arr, "delete")
+  if r == nil 
+    logger.info('Failed')
+    t = Task.new("/tftp/"+arr,"post", arr)
+    buffer.enqueue(t)
+    content_type 'application/json'
+    response.status = 503
+    else  
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end
+
+get "/tftp/serverName" do
+  r = responses.find_by_query("/tftp/serverName")
+  if r == nil 
+    logger.info('Failed to get server name')
+    t = Task.new("/tftp/serverName","get", nil)
+    buffer.enqueue(t)
+    content_type 'application/json' #thats how smart-proxy replies
+    response.status = 503
+    #"{}" #this works
+    else 
+      reply = r.response
+      responses.delete_task_by_uuid(r.uuid)
+      buffer.delete_task_by_uuid(r.uuid)
+      reply 
+  end
+end

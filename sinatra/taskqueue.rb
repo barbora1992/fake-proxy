@@ -31,4 +31,16 @@ class TaskQueue
     end
   end  
 
+  def set_finished(uuid)
+    @queue.select { |h| h.uuid == uuid }.each{ |h| h.status = "finished" }
+  end
+
+  def delete_finished
+    @queue.keep_if { |x| x.status != "finished" }
+  end
+
+  def task_exists(uuid)
+    @queue.any? { |h| h.uuid == uuid }
+  end
+
 end

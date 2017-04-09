@@ -39,8 +39,12 @@ class TaskResponseQueue
     @queue.detect { |h| h.query == query && h.method == method && h.status != "expired"} 
   end
 
-  def expire(uuid)
+  def set_expired(uuid)
     @queue.select { |h| h.uuid == uuid }.each{ |h| h.status = "expired" }
+  end
+
+  def set_finished(uuid)
+    @queue.select { |h| h.uuid == uuid }.each{ |h| h.status = "finished" }
   end
 
 end

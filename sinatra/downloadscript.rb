@@ -13,7 +13,6 @@ OptionParser.new do |opt|
 end.parse!
 
 if options.action == "download" 
-  #puts options.proxy_address
   data = RestClient::Request.execute(:method => :get, :url => options.proxy_address + '/file', :timeout => 3600)
   file = File.new(options.output_file, 'w')
   file.write data
