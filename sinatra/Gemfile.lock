@@ -58,7 +58,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  http-cookie
   json
   pry
   rack (>= 1.1)

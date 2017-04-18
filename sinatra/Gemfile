@@ -6,4 +6,4 @@ gem 'sinatra-contrib'
 gem 'sinatra-flash'
 gem 'pry'
 gem 'rest-client'
-gem 'http-cookie'
+

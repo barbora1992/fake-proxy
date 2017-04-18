@@ -3,9 +3,9 @@
     <title>PROXY WEBUI</title>
   </head>
   <body>
-  <form action="/responses" method="post">
+  <form action="/responses" method="post" enctype="multipart/form-data">
   File:<br>
-  <input type="text" name="filename"><br> <!--- or file --->
+  <input type="file" name="file" ><br> <!--- or file --->
   <input type="submit" value="Submit">
   </form>
   <br><a href="/">Click here to get back to the main page.</a>
