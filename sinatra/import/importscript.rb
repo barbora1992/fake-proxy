@@ -39,16 +39,17 @@ end.parse!
 load_tasks(options.input_file)
 
 if options.action == "send" 
-  puts "sending all tasks"
+  #puts "Sending all tasks"
   @buffer.each do |task|  
     response = task.send_to_proxy(options.proxy_address)
-    puts response.body
+    #puts response.body
     tmp = TaskResponse.new(response.body, task.action, task.uuid, "answered", task.method)
     @responses.enqueue(tmp)
   end
   file = File.new(options.output_file, 'w')
   file.write @responses.to_yaml
   file.close
+  puts "Tasks from " + options.input_file + ' were sent to ' + options.proxy_address + ' and the responses were saved in ' + options.output_file 
   #puts @responses.to_yaml
   else options.action == "list"  
     puts "listing the tasks:" 

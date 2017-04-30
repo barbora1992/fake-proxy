@@ -24,10 +24,12 @@ if options.action == "download"
   file = File.new(options.file, 'w')
   file.write data
   file.close
+  puts 'Tasks were exported into ' + options.file
 end
 
 if options.action == "upload" 
   file = File.new(options.file, 'r')
   response = RestClient::Request.execute(:method => :post, :url => options.proxy_address + '/responses', :payload => {:file => file})
+  puts 'Responses from ' + options.file + ' were uploaded to ' + options.proxy_address 
 end
 
