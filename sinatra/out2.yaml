@@ -3,27 +3,27 @@
   action: "/puppet/ca"
   method: get
   parameters: 
-  date: '20170418195735143'
+  date: '20170420183350121'
   status: saved
-  uuid: bacf8fa71e5e2e4e2c68
+  uuid: a7715f76250d9b67b671
 - !ruby/object:Task
   action: "/puppet/ca"
   method: get
   parameters: 
-  date: '20170418195735279'
+  date: '20170420183350521'
   status: saved
-  uuid: e7d2faa00d0244b29352
+  uuid: 2e4b1454c5477cdaa8ae
 - !ruby/object:Task
   action: "/puppet/ca/autosign"
   method: get
   parameters: 
-  date: '20170418195929956'
+  date: '20170420183620276'
   status: saved
-  uuid: e0498bea77d9dce536d9
+  uuid: bbece427cbb3d9b370b0
 - !ruby/object:Task
   action: "/puppet/ca/autosign"
   method: get
   parameters: 
-  date: '20170418195930124'
+  date: '20170420183620424'
   status: saved
-  uuid: 97f79a19676e831b8e07
+  uuid: 3d687bb02a7c7f4d7f28

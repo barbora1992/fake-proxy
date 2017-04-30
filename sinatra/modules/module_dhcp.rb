@@ -12,6 +12,7 @@ get "/dhcp/:network/unused_ip" do
 end
 
 get "/dhcp/:network/:record" do  # Deprecated, returns a single record
+  reply_or_create_task(arr, 'get', 'Dhcp')
 end
 
 get "/dhcp/:network/ip/:ip_address" do # returns an array of records for an ip address

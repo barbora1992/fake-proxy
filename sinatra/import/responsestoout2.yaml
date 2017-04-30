@@ -2,24 +2,24 @@
 - !ruby/object:TaskResponse
   response: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
   query: "/puppet/ca"
-  uuid: bacf8fa71e5e2e4e2c68
+  uuid: a7715f76250d9b67b671
   status: answered
   method: get
 - !ruby/object:TaskResponse
   response: '{"localhost":{"state":"valid","fingerprint":"SHA256","serial":2,"not_before":"2016-11-09T23:18:24UTC","not_after":"2021-11-09T23:18:24UTC"},"Puppet":{"serial":1,"not_before":"2016-11-09T23:18:23UTC","not_after":"2021-11-09T23:18:23UTC"}}'
   query: "/puppet/ca"
-  uuid: e7d2faa00d0244b29352
+  uuid: 2e4b1454c5477cdaa8ae
   status: answered
   method: get
 - !ruby/object:TaskResponse
-  response: '["test1"]'
+  response: '["auto111"]'
   query: "/puppet/ca/autosign"
-  uuid: e0498bea77d9dce536d9
+  uuid: bbece427cbb3d9b370b0
   status: answered
   method: get
 - !ruby/object:TaskResponse
-  response: '["test1"]'
+  response: '["auto111"]'
   query: "/puppet/ca/autosign"
-  uuid: 97f79a19676e831b8e07
+  uuid: 3d687bb02a7c7f4d7f28
   status: answered
   method: get

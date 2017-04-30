@@ -3,10 +3,10 @@ post "/tftp/fetch_boot_file" do
   reply_or_create_task(arr, 'post', 'TFTP Fetch Boot File ')
 end
 
-post "/tftp/:variant/create_default" do |variant|
+post "/tftp/:variant/create_default" do
 end
 
-get "/tftp/:variant/:mac" do |variant, mac|
+get "/tftp/:variant/:mac" do 
 end
 
 post "/tftp/:variant/:mac" do |variant, mac|

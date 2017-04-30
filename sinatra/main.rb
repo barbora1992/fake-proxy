@@ -31,6 +31,7 @@ enable :logging #works
 $logger = Logger.new('/tmp/app.error.log')
 $buffer = TaskQueue.new
 $responses = TaskResponseQueue.new
+$modules =  ["logs","puppetca", "dhcp", "tftp", "puppet"]
 
 def reply_or_create_task(parameters, method, log_message)
   action = request.env['PATH_INFO']
@@ -86,12 +87,12 @@ end
 
 get "/features" do 
   $logger.info('listing features')	        
-  '["logs","puppetca"]'
+  $modules.to_json
 end
 
 get "/version" do 
   $logger.info('listing version')
-  '{"version":"1.14.0-develop","modules":{"puppetca":"1.14.0","logs":"1.14.0"}}' #imaginary
+  version = '{"version":"1.14.0-develop","modules":{'+ $modules.map{ |x| {x => "1.14.0"}}.to_json.tr("[]{}", "") + "}}" 
 end
 
 get "/logs/" do #TODO it just doesnt want to work - it used to, but now it doesnt
