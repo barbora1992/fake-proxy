@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'yaml'
 require 'securerandom'
 require 'optparse'
@@ -42,7 +44,7 @@ if options.action == "send"
   #puts "Sending all tasks"
   @buffer.each do |task|  
     response = task.send_to_proxy(options.proxy_address)
-    #puts response.body
+    puts "Task UUID: " + task.uuid + 'was sent'
     tmp = TaskResponse.new(response.body, task.action, task.uuid, "answered", task.method)
     @responses.enqueue(tmp)
   end
@@ -51,9 +53,12 @@ if options.action == "send"
   file.close
   puts "Tasks from " + options.input_file + ' were sent to ' + options.proxy_address + ' and the responses were saved in ' + options.output_file 
   #puts @responses.to_yaml
-  else options.action == "list"  
-    puts "listing the tasks:" 
-    puts @buffer.to_yaml
+else options.action == "list"  
+  puts "listing the tasks:" 
+  #puts @buffer.to_yaml
+  @buffer.each do |task| 
+    puts "Task UUID: " + task.uuid +  ' Method: ' + task.method.ljust(6) + ' Action: ' + task.action
+  end
 end
 
 

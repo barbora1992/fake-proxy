@@ -39,17 +39,17 @@ def reply_or_create_task(parameters,log_message)
   action = request.env['PATH_INFO']
   method = request.env['REQUEST_METHOD']
   r = $responses.find_by_query_and_method(action, method)
-  if r == nil 
+  if r.nil? 
     $logger.info(log_message)
     t = Task.new(action, method, parameters)
     $buffer.enqueue(t)
     content_type 'application/json'
     response.status = 503
-    else  
-      reply = r.response
-      $responses.delete_task_by_uuid(r.uuid)
-      $buffer.delete_task_by_uuid(r.uuid)
-      reply 
+  else  
+    reply = r.response
+    $responses.delete_task_by_uuid(r.uuid)
+    $buffer.delete_task_by_uuid(r.uuid)
+    reply 
   end
 end
 
@@ -75,11 +75,15 @@ post '/responses' do #this should work
       $responses.enqueue(tmp)
     end
   end
-  redirect '/responselist'
+  redirect '/response_list'
 end
 
-get '/responselist' do
-  erb :responselist, :locals => { :responses => $responses } 
+#get '/response_list' do
+#  erb :response_list, :locals => { :responses => $responses } 
+#end
+
+get '/response_table' do
+  erb :response_table, :locals => { :responses => $responses } 
 end
 
 ##################################WEBUI######################################################
