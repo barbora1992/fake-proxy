@@ -35,8 +35,9 @@ $responses = TaskResponseQueue.new
 $modules =  ["logs","puppetca", "dhcp", "tftp", "puppet"]
 @message = "Hello"
 
-def reply_or_create_task(parameters, method, log_message)
+def reply_or_create_task(parameters,log_message)
   action = request.env['PATH_INFO']
+  method = request.env['REQUEST_METHOD']
   r = $responses.find_by_query_and_method(action, method)
   if r == nil 
     $logger.info(log_message)
