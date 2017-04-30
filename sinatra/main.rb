@@ -27,11 +27,13 @@ require_relative "import/taskresponse"
 
 set :bind, '0.0.0.0'
 enable :logging #works
+enable :sessions
 
 $logger = Logger.new('/tmp/app.error.log')
 $buffer = TaskQueue.new
 $responses = TaskResponseQueue.new
 $modules =  ["logs","puppetca", "dhcp", "tftp", "puppet"]
+@message = "Hello"
 
 def reply_or_create_task(parameters, method, log_message)
   action = request.env['PATH_INFO']
@@ -82,7 +84,7 @@ end
 ##################################WEBUI######################################################
 
 get '/' do 
-  erb :webui
+  erb :webui, :locals => { :message => $message } 
 end
 
 get "/features" do 
@@ -108,7 +110,8 @@ end
 get '/clear' do #delete 'tasks'
   $buffer.clear
   $responses.clear
-  erb :success
+  @message = session[:message] = 'All tasks were deleted'
+  erb :webui, :locals => { :message => $message }
 end
 
 get '/tasks' do #get 'tasks'
@@ -120,6 +123,8 @@ get '/file' do
   content_type 'plain/text'
   attachment "tasks.yaml"
   $buffer.to_yaml
+  #@message = session[:message] = 'List was saved' #will return webui.erb
+  #erb :webui, :locals => { :message => $message }
 end
 
 get '/delete_by_uuid' do 
@@ -130,7 +135,8 @@ post '/delete_task_by_uuid' do #we will delete also a response if exists
   u = params[:uuid]
   $buffer.delete_task_by_uuid(u)
   $responses.delete_task_by_uuid(u)
-  redirect '/'
+  @message = session[:message] = 'Task was deleted'
+  erb :webui, :locals => { :message => $message }
 end
 
 get '/preload' do 
@@ -142,6 +148,7 @@ get '/preload' do
   #post "/run" do
   #get "/environments" do
   #get "/tftp/serverName"
-  redirect '/'
+  @message = session[:message] = 'Tasks were preloaded'
+  erb :webui, :locals => { :message => $message }
 end
 
