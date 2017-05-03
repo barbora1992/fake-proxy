@@ -1,24 +1,20 @@
-post "/run" do
-  arr = nil
-  reply_or_create_task(arr, 'Run Puppet Proxy')
+post "/puppet/run" do
+  reply_or_create_task('Run Puppet Proxy')
 end
 
-get "/environments" do
-  arr = nill
-  reply_or_create_task(arr, 'fail')
+get "/puppet/environments" do
+  reply_or_create_task('List Puppet environments')
 end
 
-get "/environments/:environment" do
-  arr = params[:environment]
-  reply_or_create_task(arr, 'get proxy environment')
-
+get "/puppet/environments/:environment" do
+  reply_or_create_task('Show Puppet environment')
 end
 
-get "/environments/:environment/classes" do
-  arr = params[:environment]
-  reply_or_create_task(arr+'/classes', 'get proxy environment')
+get "/puppet/environments/:environment/classes" do
+  reply_or_create_task('Show Puppet classes for an environment')
 end
 
-get "/environments/:environment/classes_and_errors" do
+get "/puppet/environments/:environment/classes_and_errors" do
+  reply_or_create_task('Show Puppet classes and errors for an environment')
 end
 

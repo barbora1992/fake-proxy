@@ -24,11 +24,11 @@ class Task
 
   def send_to_proxy(address) 
     op = self.action
-    if self.method == "get" 
+    if self.method == "GET" 
       response = RestClient::Request.execute(:method => :get, :url => address + op, :timeout => 3600)
-      elsif self.method == "post"
+      elsif self.method == "POST"
         response = RestClient::Request.execute(:method => :post, :url => address + op, :timeout => 3600)
-      elsif self.method == "delete"
+      elsif self.method == "DELETE"
        response = RestClient::Request.execute(:method => :delete, :url => address + op, :timeout => 3600)
     end
   end

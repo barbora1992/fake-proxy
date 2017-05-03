@@ -1,43 +1,15 @@
 ---
 - !ruby/object:Task
   action: "/puppet/ca"
-  method: get
+  method: GET
   parameters: 
-  date: '20170430193921946'
+  date: '20170430233838068'
   status: saved
-  uuid: 4e52025cfcd254c5b53f
+  uuid: e9e98d59867177e7edf7
 - !ruby/object:Task
   action: "/puppet/ca/autosign"
-  method: get
+  method: GET
   parameters: 
-  date: '20170430193921946'
+  date: '20170430233838068'
   status: saved
-  uuid: 53e67fc7770e948b466a
-- !ruby/object:Task
-  action: "/puppet/ca"
-  method: get
-  parameters: 
-  date: '20170430193923355'
-  status: saved
-  uuid: 9ffa243830b43473bb3f
-- !ruby/object:Task
-  action: "/puppet/ca/autosign"
-  method: get
-  parameters: 
-  date: '20170430193923355'
-  status: saved
-  uuid: 9ca33dbfb922102bff18
-- !ruby/object:Task
-  action: "/puppet/ca"
-  method: get
-  parameters: 
-  date: '20170430193923565'
-  status: saved
-  uuid: 36892012bd4caa774e52
-- !ruby/object:Task
-  action: "/puppet/ca/autosign"
-  method: get
-  parameters: 
-  date: '20170430193923565'
-  status: saved
-  uuid: 9a6451a2e3d303ef4795
+  uuid: 00893ba86faae80aa249

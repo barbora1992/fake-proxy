@@ -13,11 +13,11 @@ require 'logger'
 require "sinatra/streaming"
 require 'rest-client'
 
-load 'modules/module_puppetca.rb'
-load 'modules/module_dhcp.rb'
-load 'modules/module_dns.rb'
-load 'modules/module_puppet_proxy.rb'
-load 'modules/module_tftp.rb'
+require './modules/module_puppetca.rb'
+require './modules/module_dhcp.rb'
+require './modules/module_dns.rb'
+require './modules/module_puppet_proxy.rb'
+require './modules/module_tftp.rb'
 
 
 require_relative "task"
@@ -26,7 +26,7 @@ require_relative "import/taskresponsequeue"
 require_relative "import/taskresponse"
 
 set :bind, '0.0.0.0'
-enable :logging #works
+enable :logging 
 enable :sessions
 
 $logger = Logger.new('/tmp/app.error.log')
@@ -35,9 +35,14 @@ $responses = TaskResponseQueue.new
 $modules =  ["logs","puppetca", "dhcp", "tftp", "puppet"]
 @message = "Hello"
 
-def reply_or_create_task(parameters,log_message)
+$preload = Array.new
+#$preload = [Task.new("/puppet/ca","GET", nil), Task.new("/puppet/ca/autosign","GET", nil), Task.new("/dhcp/?","GET", nil), Task.new("/puppet/run","POST", nil), Task.new("/puppet/environments","GET", nil), Task.new("/tftp/serverName","GET", nil)]
+$preload = [Task.new("/puppet/ca","GET", nil), Task.new("/puppet/ca/autosign","GET", nil)]
+	
+def reply_or_create_task(log_message)
   action = request.env['PATH_INFO']
   method = request.env['REQUEST_METHOD']
+  parameters = request.env['QUERY_STRING']
   r = $responses.find_by_query_and_method(action, method)
   if r.nil? 
     $logger.info(log_message)
@@ -51,12 +56,6 @@ def reply_or_create_task(parameters,log_message)
     $buffer.delete_task_by_uuid(r.uuid)
     reply 
   end
-end
-
-get '/test/:aaa' do
-  #action = request.env['PATH_INFO'] # + "?" + request.env['QUERY_STRING']
-  arr = params[:aaa]
-  reply_or_create_task(arr, 'get', 'fail')
 end
 
 #***********************RESPONSES***************************************************
@@ -75,7 +74,7 @@ post '/responses' do #this should work
       $responses.enqueue(tmp)
     end
   end
-  redirect '/response_list'
+  redirect '/response_table'
 end
 
 #get '/response_list' do
@@ -93,23 +92,28 @@ get '/' do
 end
 
 get "/features" do 
-  $logger.info('listing features')	        
+  $logger.info('Listing features')	        
   $modules.to_json
 end
 
 get "/version" do 
-  $logger.info('listing version')
+  $logger.info('Listing version')
   version = '{"version":"1.14.0-develop","modules":{'+ $modules.map{ |x| {x => "1.14.0"}}.to_json.tr("[]{}", "") + "}}" 
 end
 
 get "/logs/" do #TODO it just doesnt want to work - it used to, but now it doesnt
-  $logger.info('listing logs')
+  $logger.info('Listing logs')
   content_type :json 
-  #$logger.to_json
-  #binding.pry 
-  #{"logs": $logger.to_json }
   records = File.read('/tmp/app.error.log').split("\n")
-  #'{}'
+  records.shift
+  records.reverse!
+  parsed = Array.new
+  records.each do |line|
+    msg = line.split(':')[-1]
+    hash = {:timestamp => Time.now.to_f, :level => "INFO", :message => msg}
+    parsed.push(hash)
+  end
+  '{"info":{"failed_modules":{}},"logs":' + parsed.to_json + '}'
 end
 
 get '/clear' do #delete 'tasks'
@@ -145,14 +149,10 @@ post '/delete_task_by_uuid' do #we will delete also a response if exists
 end
 
 get '/preload' do 
-  t = Task.new("/puppet/ca","get", nil)
-  $buffer.enqueue(t)
-  s = Task.new("/puppet/ca/autosign","get", nil) 
-  $buffer.enqueue(s)
-  #get "/dhcp/?"
-  #post "/run" do
-  #get "/environments" do
-  #get "/tftp/serverName"
+  $preload.each do |item| 
+    $buffer.enqueue(item)
+    $logger.info('Task ' + item.method + " " + item.action + ' was preloaded') 
+  end
   @message = session[:message] = 'Tasks were preloaded'
   erb :webui, :locals => { :message => $message }
 end

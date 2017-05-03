@@ -1,36 +1,35 @@
 post "/tftp/fetch_boot_file" do
-  arr = nil
-  reply_or_create_task(arr, 'TFTP Fetch Boot File ')
+  reply_or_create_task('TFTP Fetch Boot File ')
 end
 
 post "/tftp/:variant/create_default" do
+  reply_or_create_task('Create default config file')
 end
 
 get "/tftp/:variant/:mac" do 
+  reply_or_create_task('Retrieve pxe config file')
 end
 
-post "/tftp/:variant/:mac" do |variant, mac|
+post "/tftp/:variant/:mac" do 
+  reply_or_create_task('Create config file for mac address')
 end
 
-delete "/tftp/:variant/:mac" do |variant, mac|
+delete "/tftp/:variant/:mac" do 
+  reply_or_create_task('Delete config file for mac address')
 end
 
 post "/tftp/create_default" do
-  arr = nil
-  reply_or_create_task(arr, 'TFTP Create Default')
+  reply_or_create_task('TFTP Create Default')
 end
 
-post "/tftp/:mac" do |mac|
-  arr = params[:mac]
-  reply_or_create_task(arr, 'TFTP Post MAC')
+post "/tftp/:mac" do
+  reply_or_create_task('TFTP Post MAC')
 end
 
-delete "/tftp/:mac" do |mac|
-  arr = params[:mac]
-  reply_or_create_task(arr, 'TFTP Delete MAC')
+delete "/tftp/:mac" do
+  reply_or_create_task('TFTP Delete MAC')
 end
 
 get "/tftp/serverName" do
-  arr = nil
-  reply_or_create_task(arr, 'TFTP Get Server Name')
+  reply_or_create_task('TFTP Get Server Name')
 end
