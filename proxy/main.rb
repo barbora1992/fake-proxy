@@ -104,7 +104,6 @@ get '/tasks' do
 end
 
 get '/download' do 
-  $task_buffer.mark_tasks_saved
   content_type 'plain/text'
   attachment "tasks.yaml"
   $task_buffer.to_yaml
@@ -141,7 +140,7 @@ post '/responses' do
   items = Array.new
   items = YAML.load(content)
   items.each do |item| 
-    tmp = TaskResponse.new(item.response, item.query, item.parameters, item.uuid, item.status, item.method)
+    tmp = TaskResponse.new(item.response, item.query, item.parameters, item.uuid, item.method)
     if $task_buffer.task_exists(tmp.uuid)
       $response_buffer.delete_task_by_uuid(tmp.uuid) #purge old versions by uuid, no need to store time in task response, it just deletes all of them, stores the newest one
       $response_buffer.enqueue(tmp)

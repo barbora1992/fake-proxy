@@ -2,16 +2,15 @@ require 'rest-client'
 require 'yaml'
 
 class Task 
-  def initialize(action, method, parameters, date, status, uuid) #action (whole /puppet/ca/:cert), method (post del get) a parameters :cert
+  def initialize(action, method, parameters, date, uuid) #action (whole /puppet/ca/:cert), method (post del get) a parameters :cert
     @action = action
     @method = method
     @parameters = parameters
     @date = date
-    @status = status
     @uuid = uuid
   end
  
-  attr_accessor :action, :method, :parameters, :date, :status, :uuid  
+  attr_accessor :action, :method, :parameters, :date, :uuid  
  
   def send_to_proxy(address) 
     op = self.action

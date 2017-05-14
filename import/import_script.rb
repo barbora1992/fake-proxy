@@ -22,7 +22,7 @@ def load_tasks(filename)
     items = Array.new
     items = YAML.load_file(filename)
     items.each do |item|
-      tmp = Task.new(item.action, item.method, item.parameters, item.date, item.status, item.uuid)
+      tmp = Task.new(item.action, item.method, item.parameters, item.date, item.uuid)
       @task_buffer.enqueue(tmp)
     end
   else 
@@ -45,7 +45,7 @@ if options.action == "send"
     begin 
       response = task.send_to_proxy(options.proxy_address)
       puts "Task UUID: " + task.uuid + ' was sent'
-      tmp = TaskResponse.new(response.body, task.action, task.parameters, task.uuid, "answered", task.method)
+      tmp = TaskResponse.new(response.body, task.action, task.parameters, task.uuid, task.method)
       @response_buffer.enqueue(tmp)
     rescue => e
       puts "Task UUID: " + task.uuid + ": An error occured - please make sure that the proxy address is correct and the proxy has correct modules enabled" 

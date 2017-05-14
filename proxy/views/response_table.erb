@@ -8,6 +8,7 @@ List of responses:
       <th>UUID</th>
       <th>Method</th>
       <th>Action</th>
+      <th>Parameters</th>
       <th>Response</th>
 </tr>
 <% response_buffer.each do |item| %>
@@ -15,6 +16,7 @@ List of responses:
     <td><%= item.uuid %> </td> 
     <td><%= item.method %> </td>
     <td><%= item.query %> </td>
+    <td><%= item.parameters %> </td>
     <td><%= item.response %> </td>
 </tr> <br>
 <% end %>

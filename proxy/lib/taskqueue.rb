@@ -23,13 +23,7 @@ class TaskQueue
 
   def to_yaml
     @queue.to_yaml
-  end
-  
-  def mark_tasks_saved
-    @queue.each do |task|  
-    task.status = "saved" 
-    end
-  end  
+  end 
 
   def task_exists(uuid)
     @queue.any? { |h| h.uuid == uuid }
