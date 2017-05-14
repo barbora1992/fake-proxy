@@ -1,0 +1,43 @@
+---
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514202417230'
+  status: saved
+  uuid: 9bc1f1dada2e7d276a80
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514202417275'
+  status: saved
+  uuid: d219ba93d1d1cef46b89
+- !ruby/object:Task
+  action: "/puppet/ca/autosign"
+  method: GET
+  parameters: ''
+  date: '20170514202417329'
+  status: saved
+  uuid: 62f2d83df14036643100
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514202417383'
+  status: saved
+  uuid: e00020f009d98d13c32b
+- !ruby/object:Task
+  action: "/puppet/ca/autosign"
+  method: GET
+  parameters: ''
+  date: '20170514202417442'
+  status: saved
+  uuid: 433be59a7235db11b040
+- !ruby/object:Task
+  action: "/tftp/serverName"
+  method: GET
+  parameters: ''
+  date: '20170514202417602'
+  status: saved
+  uuid: 25b14f7c690828555763

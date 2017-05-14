@@ -11,12 +11,5 @@ class Task
   end
  
   attr_accessor :action, :method, :parameters, :date, :status, :uuid  
- 
-  def to_hash
-    Hash["action" => @action, "method" => @method, "parameters" => @parameters, "date" => @date, "status" => @status, "uuid" => @uuid]
-  end
 
-  #def to_yaml
-  #  self.to_yaml
-  #end
 end

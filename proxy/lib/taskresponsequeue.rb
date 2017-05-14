@@ -27,12 +27,8 @@ class TaskResponseQueue
     @queue.to_yaml
   end
 
-  def find(uuid)
-    @queue.detect { |h| h.uuid == uuid } 
-  end
-
-  def find_by_query_and_method(query, method)
-    @queue.detect { |h| h.query == query && h.method == method && h.status != "expired"} 
+  def find_by_query_method_parameters(query, method, parameters)
+    @queue.detect { |h| h.query == query && h.method == method && h.parameters == parameters} 
   end
 
 end

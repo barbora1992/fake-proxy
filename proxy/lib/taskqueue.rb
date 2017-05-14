@@ -35,8 +35,4 @@ class TaskQueue
     @queue.any? { |h| h.uuid == uuid }
   end
 
-  def find_by_query_and_method(query, method)
-    @queue.detect { |h| h.action == query && h.method == method && h.status != "expired"} 
-  end
-
 end

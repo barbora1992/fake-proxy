@@ -1,31 +1,30 @@
+<html>
 <head>
   <title>PROXY WEBUI</title>
 </head>
 <body>
-List of responses: 
+List of tasks: 
 <table BORDER="1">
 <tr>
       <th>UUID</th>
+      <th>Date</th>
       <th>Method</th>
       <th>Action</th>
-      <th>Response</th>
+      <th>Parameters</th>
+      <th>Status</th>
 </tr>
-<% responses.each do |item| %>
+<% task_buffer.each do |item| %>
 <tr>
     <td><%= item.uuid %> </td> 
+    <td><%= item.date %> </td> 
     <td><%= item.method %> </td>
-    <td><%= item.query %> </td>
-    <td><%= item.response %> </td>
+    <td><%= item.action %> </td>
+    <td><%= item.parameters %> </td>
+    <td><%= item.status %> </td> 
 </tr> <br>
 <% end %>
 </table>
 <br><a href="/">Click here to get back to the main page.</a>
 </body>
-
-
- 
-
-
-
-
+</html>
 

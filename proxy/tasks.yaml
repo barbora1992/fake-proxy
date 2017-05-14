@@ -1,0 +1,43 @@
+---
+- !ruby/object:Task
+  action: "/puppet/ca/autosign/test"
+  method: DELETE
+  parameters: ''
+  date: '20170514214505326'
+  status: saved
+  uuid: d59f87dff77daad35de0
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514214508228'
+  status: saved
+  uuid: 4cf3d7927308cf75f2f5
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514214508273'
+  status: saved
+  uuid: 7a794c6dfbe078af578b
+- !ruby/object:Task
+  action: "/puppet/ca/autosign"
+  method: GET
+  parameters: ''
+  date: '20170514214508327'
+  status: saved
+  uuid: 74689c77b61dac0a29f4
+- !ruby/object:Task
+  action: "/puppet/ca"
+  method: GET
+  parameters: ''
+  date: '20170514214508398'
+  status: saved
+  uuid: f8e95615572acf607abb
+- !ruby/object:Task
+  action: "/puppet/ca/autosign"
+  method: GET
+  parameters: ''
+  date: '20170514214508466'
+  status: saved
+  uuid: 9b34d7ec1b02b82d385b

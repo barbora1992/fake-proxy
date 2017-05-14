@@ -13,15 +13,6 @@ class Task
  
   attr_accessor :action, :method, :parameters, :date, :status, :uuid  
  
-  def to_hash
-    Hash["action" => @action, "method" => @method, "parameters" => @parameters, "date" => @date, "status" => @status, "uuid" => @uuid]
-  end
-
-  #def to_yaml #- either serialize to yaml or make makeshift hashes
-  #  x = self.to_hash
-  #  x.to_yaml
-  #end
-
   def send_to_proxy(address) 
     op = self.action
     if self.method == "GET" 

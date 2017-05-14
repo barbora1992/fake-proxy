@@ -6,24 +6,26 @@ List of responses:
 <table BORDER="1">
 <tr>
       <th>UUID</th>
-      <th>Date</th>
       <th>Method</th>
       <th>Action</th>
-      <th>Parameters</th>
-      <th>Status</th>
+      <th>Response</th>
 </tr>
-<% buffer.each do |item| %>
+<% response_buffer.each do |item| %>
 <tr>
     <td><%= item.uuid %> </td> 
-    <td><%= item.date %> </td> 
     <td><%= item.method %> </td>
-    <td><%= item.action %> </td>
-    <td><%= item.parameters %> </td>
-    <td><%= item.status %> </td> 
+    <td><%= item.query %> </td>
+    <td><%= item.response %> </td>
 </tr> <br>
 <% end %>
 </table>
 <br><a href="/">Click here to get back to the main page.</a>
 </body>
+
+
+ 
+
+
+
 
 
